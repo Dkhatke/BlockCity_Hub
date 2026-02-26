@@ -1,5 +1,5 @@
 
-# 🏙️ BlockCity Hub — Web3 dApp (Sepolia Testnet)
+# 🏙️ BlockCity Hub — Web3 dApp 
 
 Welcome to **BlockCity Hub** 🚀  
 This is a complete Web3 dApp built during the BlockCity Workshop.
