@@ -3,66 +3,101 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BlockCity Hub — Your Web3 dApp</title>
+<title>ANVAY — BlockCity Web3 Workshop</title>
 
-<!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="./assets/css/style.css">
-
-<!-- Only ONE ethers -->
+<link rel="stylesheet" href="assets/css/style.css">
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.9.0/dist/ethers.umd.min.js"></script>
 </head>
 <body>
 
-<!-- ═══ LOADING OVERLAY ═══ -->
+<canvas id="blockchainCanvas"></canvas>
+
 <div class="loading-overlay" id="loadingOverlay">
-  <div class="spinner"></div>
-  <div class="loading-msg" id="loadingMsg">Connecting to blockchain...</div>
+  <div class="spinner-wrap">
+    <div class="spinner"></div>
+    <div class="spinner-ring"></div>
+  </div>
+  <div class="loading-msg" id="loadingMsg">Processing...</div>
 </div>
 
-<!-- ═══ TOAST CONTAINER ═══ -->
 <div id="toast"></div>
 
-<!-- ═══════════════════════════════════════════════════════
-     TOPBAR
-═══════════════════════════════════════════════════════ -->
+<!-- ══ TOPBAR ══ -->
 <nav class="topbar">
   <div class="topbar-inner">
+
     <div class="topbar-logo">
-      🏙️ &nbsp;
-      <span id="cityNameNav">BLOCKCITY</span>
-      &nbsp;<span style="color:var(--muted);font-size:0.8rem;">HUB</span>
+      <!-- Animated chain blocks -->
+      <div class="logo-chain">
+        <span class="lc-block lc1"></span>
+        <span class="lc-link"></span>
+        <span class="lc-block lc2"></span>
+        <span class="lc-link"></span>
+        <span class="lc-block lc3"></span>
+      </div>
+      BLOCKCITY
+      <span class="logo-sub">ANVAY Edition</span>
     </div>
 
     <div class="topbar-right">
-      <!-- Contract health dots -->
-      <div class="contract-dots" title="Contract status: R1=Foundation R2=Token R3=Badge R4=Voting">
-        <div class="cdot r1" id="dot-r1" title="Room 1 — Foundation"></div>
-        <div class="cdot r2" id="dot-r2" title="Room 2 — Token"></div>
-        <div class="cdot r3" id="dot-r3" title="Room 3 — Badge"></div>
-        <div class="cdot r4" id="dot-r4" title="Room 4 — Voting"></div>
-        <span class="cdot-label">CONTRACTS</span>
+      <div class="nav-progress" id="navProgress">
+        <div class="nav-dot" id="nav-r1" title="Room 1 — Foundation"></div>
+        <div class="nav-dot" id="nav-r2" title="Room 2 — Token"></div>
+        <div class="nav-dot" id="nav-r3" title="Room 3 — Certificate"></div>
+        <div class="nav-dot" id="nav-r4" title="Room 4 — Council"></div>
+        <span class="nav-label">CONTRACTS</span>
       </div>
-
-      <button id="connectBtn" onclick="connectWallet()">
-        Connect Wallet
-      </button>
+      <button id="connectBtn" onclick="connectWallet()">Connect Wallet</button>
     </div>
+
   </div>
 </nav>
 
-<!-- ═══════════════════════════════════════════════════════
-     HERO
-═══════════════════════════════════════════════════════ -->
 <div class="container">
+
+  <!-- ══ HERO ══ -->
   <div class="hero">
-    <div class="hero-eyebrow">Built at BlockCity Workshop — Sepolia Testnet</div>
-    <div class="hero-title">
-      <span class="accent" id="heroTitle">BLOCKCITY</span><br>HUB
+
+    <div class="hero-eyebrow">
+      <div class="eyebrow-line"></div>
+      ANVAY &nbsp;·&nbsp; BlockCity Web3 Gamified Workshop
+      <div class="eyebrow-line"></div>
     </div>
-    <div class="hero-sub">Your Web3 dApp — 4 contracts · 1 frontend · fully yours</div>
+
+    <!-- Floating block labels drifting in bg -->
+    <div class="hero-blocks-bg">
+      <div class="hb hb1">0x1A</div>
+      <div class="hb hb2">NFT</div>
+      <div class="hb hb3">DAO</div>
+      <div class="hb hb4">ERC20</div>
+      <div class="hb hb5">WEB3</div>
+      <div class="hb hb6">SOL</div>
+    </div>
+
+    <div class="hero-title">
+      <span class="accent">ANVAY</span>
+      <span class="accent">BLOCKCITY</span>
+    </div>
+
+    <!-- Animated blockchain chain — one node per contract -->
+    <div class="chain-row">
+      <div class="chain-node cn1"><span>LAW</span></div>
+      <div class="chain-wire"></div>
+      <div class="chain-node cn2"><span>TOKEN</span></div>
+      <div class="chain-wire"></div>
+      <div class="chain-node cn3"><span>NFT</span></div>
+      <div class="chain-wire"></div>
+      <div class="chain-node cn4"><span>VOTE</span></div>
+      <div class="chain-wire"></div>
+      <div class="chain-node cn5"><span>dAPP</span></div>
+    </div>
+
+    <div class="hero-sub">
+      Microsoft Learn Student Chapter — Cummins College of Engineering for Women
+    </div>
 
     <div class="wallet-bar">
       <div class="wstat">
@@ -80,138 +115,130 @@
         <span class="wstat-value" id="tokenBalanceHero">—</span>
       </div>
     </div>
+
   </div>
 
-  <!-- ═══════════════════════════════════════════════════════
-       4 MODULE GRID
-  ═══════════════════════════════════════════════════════ -->
+  <!-- ══ MODULES ══ -->
   <div class="modules">
 
-    <!-- ─── MODULE 1: CITY FOUNDATION (Room 1) ─── -->
+    <!-- ROOM 1 -->
     <div class="module r1-module">
       <div class="module-accent"></div>
       <div class="module-header">
         <div>
           <div class="module-icon">🏛️</div>
           <div class="module-title">City Foundation</div>
-          <div class="module-desc">The base contract. Platform name, owner, core rules.</div>
+          <div class="module-desc">Add and view on-chain laws</div>
         </div>
         <span class="module-tag">Room 1</span>
       </div>
       <div class="module-body">
-        <!-- Live stat -->
-        <div class="stat-row">
-          <span class="stat-label">Platform Name</span>
-          <span class="stat-value" id="cityNameDisplay">—</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Owner</span>
-          <span class="stat-value" id="ownerDisplay" style="font-size:0.7rem;">—</span>
-        </div>
-
-        <!-- Read action -->
-        <button class="btn btn-outline" onclick="readFoundation()" style="--accent:var(--r1)">
-          ↻ Refresh
-        </button>
-
-        <!-- Write action -->
         <div class="field">
-          <label>Update City Name</label>
-          <input type="text" id="newCityName" placeholder="e.g. CryptoCity" />
+          <label>Add Law</label>
+          <input type="text" id="newLaw" placeholder="Enter law text...">
         </div>
-        <button class="btn btn-primary" onclick="updateCityName()">
-          Set Name on Chain
-        </button>
+        <button class="btn btn-primary" onclick="addLaw()">⚖️ Add Law</button>
+        <div class="field">
+          <label>View Law Index</label>
+          <input type="number" id="lawIndex" placeholder="0">
+        </div>
+        <button class="btn btn-outline" onclick="viewLaw()">View Law</button>
+        <div class="stat-row">
+          <span class="stat-label">Total Laws</span>
+          <span class="stat-value" id="lawCountDisplay">—</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Law Output</span>
+          <span class="stat-value" id="lawOutput">—</span>
+        </div>
       </div>
     </div>
 
-    <!-- ─── MODULE 2: TREASURY (Room 2) ─── -->
+    <!-- ROOM 2 -->
     <div class="module r2-module">
       <div class="module-accent"></div>
       <div class="module-header">
         <div>
           <div class="module-icon">💰</div>
-          <div class="module-title">Treasury</div>
-          <div class="module-desc">ERC-20 token. Mint, reward and track BCT balances.</div>
+          <div class="module-title">Reward Token</div>
+          <div class="module-desc">Mint and track ANVAY workshop tokens</div>
         </div>
         <span class="module-tag">Room 2</span>
       </div>
       <div class="module-body">
         <div class="stat-row">
-          <span class="stat-label">Your BCT Balance</span>
+          <span class="stat-label">Total Supply</span>
+          <span class="stat-value" id="totalSupply">—</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Your Balance</span>
           <span class="stat-value" id="tokenBalance">—</span>
         </div>
-
-        <button class="btn btn-outline" onclick="readTreasury()" style="--accent:var(--r2)">
-          ↻ Refresh Balance
-        </button>
-
+        <button class="btn btn-outline" onclick="readTreasury()">↻ Refresh</button>
         <div class="field">
-          <label>Mint Tokens — Recipient Address</label>
-          <input type="text" id="mintAddress" placeholder="0x..." />
+          <label>Mint Address</label>
+          <input type="text" id="mintAddress" placeholder="0x...">
         </div>
         <div class="field">
-          <label>Amount (BCT)</label>
-          <input type="number" id="mintAmount" placeholder="e.g. 100" min="1" />
+          <label>Amount (whole tokens)</label>
+          <input type="number" id="mintAmount" placeholder="100">
         </div>
-        <div class="btn-row">
-          <button class="btn btn-primary" onclick="mintTokens()">Mint BCT</button>
-          <button class="btn btn-outline" onclick="rewardUser()" style="--accent:var(--r2)">⭐ Reward</button>
-        </div>
+        <button class="btn btn-primary" onclick="mintTokens()">💰 Mint Tokens</button>
+        <div class="hint-text">Contract multiplies by 10¹⁸ — enter whole numbers only</div>
       </div>
     </div>
 
-    <!-- ─── MODULE 3: IDENTITY (Room 3) ─── -->
+    <!-- ROOM 3 — no IPFS field -->
     <div class="module r3-module">
       <div class="module-accent"></div>
       <div class="module-header">
         <div>
-          <div class="module-icon">🪪</div>
-          <div class="module-title">Identity</div>
-          <div class="module-desc">NFT badges. Award unique certificates stored on IPFS.</div>
+          <div class="module-icon">🎓</div>
+          <div class="module-title">ANVAY Certificate</div>
+          <div class="module-desc">Mint verifiable NFT certificate</div>
         </div>
         <span class="module-tag">Room 3</span>
       </div>
       <div class="module-body">
         <div class="stat-row">
-          <span class="stat-label">Total Badges Minted</span>
+          <span class="stat-label">Certificates Minted</span>
           <span class="stat-value" id="badgeCount">—</span>
         </div>
-
+        <div class="field">
+          <label>Participant Name</label>
+          <input type="text" id="studentName" placeholder="Full name..."
+                 oninput="updateCertPreview()">
+        </div>
+        <div class="field">
+          <label>Citizen ID</label>
+          <input type="text" id="citizenId" placeholder="e.g. BC-1024"
+                 oninput="updateCertPreview()">
+        </div>
         <div class="field">
           <label>Recipient Address</label>
-          <input type="text" id="badgeAddress" placeholder="0x..." />
+          <input type="text" id="badgeAddress" placeholder="0x...">
         </div>
+        <button class="btn btn-primary" onclick="mintCertificate()">🎓 Mint Certificate</button>
         <div class="field">
-          <label>IPFS Metadata URI</label>
-          <input type="text" id="badgeURI" placeholder="ipfs://..." />
+          <label>Verify — Token ID</label>
+          <input type="number" id="lookupTokenId" placeholder="e.g. 0" min="0">
         </div>
-        <button class="btn btn-primary" onclick="mintBadge()">Award Badge</button>
-
-        <!-- Ownership lookup -->
-        <div class="field" style="margin-top:0.4rem">
-          <label>Lookup — Token ID</label>
-          <input type="number" id="lookupTokenId" placeholder="e.g. 0" min="0"/>
-        </div>
-        <div class="btn-row">
-          <button class="btn btn-outline" onclick="lookupOwner()" style="--accent:var(--r3)">Who Owns?</button>
-          <button class="btn btn-outline" onclick="lookupURI()" style="--accent:var(--r3)">View URI</button>
-        </div>
+        <button class="btn btn-outline" onclick="lookupOwner()">Who Owns?</button>
         <div class="stat-row" id="lookupResult" style="display:none">
           <span class="stat-label" id="lookupLabel">Owner</span>
-          <span class="stat-value" id="lookupValue" style="font-size:0.68rem;word-break:break-all;"></span>
+          <span class="stat-value" id="lookupValue"></span>
         </div>
       </div>
     </div>
 
-    <!-- ─── MODULE 4: COUNCIL (Room 4) ─── -->
+    <!-- ROOM 4 -->
     <div class="module r4-module">
       <div class="module-accent"></div>
       <div class="module-header">
         <div>
           <div class="module-icon">🗳️</div>
           <div class="module-title">Council</div>
-          <div class="module-desc">On-chain governance. Create proposals, vote, execute.</div>
+          <div class="module-desc">On-chain governance voting</div>
         </div>
         <span class="module-tag">Room 4</span>
       </div>
@@ -220,116 +247,144 @@
           <span class="stat-label">Total Proposals</span>
           <span class="stat-value" id="proposalCount">—</span>
         </div>
-
-        <!-- Create proposal -->
         <div class="field">
           <label>Proposal Title</label>
-          <input type="text" id="proposalTitle" placeholder="e.g. Add a city park" />
+          <input type="text" id="proposalTitle" placeholder="e.g. Add a city park">
         </div>
         <div class="field">
-          <label>Voting Duration (minutes)</label>
-          <input type="number" id="proposalDuration" placeholder="e.g. 10" min="1" value="10"/>
+          <label>Duration (minutes)</label>
+          <input type="number" id="proposalDuration" value="10">
         </div>
         <button class="btn btn-primary" onclick="createProposal()">Create Proposal</button>
-
-        <!-- Vote on existing -->
-        <div class="field" style="margin-top:0.2rem">
-          <label>Vote on Proposal ID</label>
-          <input type="number" id="voteProposalId" placeholder="e.g. 0" min="0"/>
+        <div class="field">
+          <label>Vote Proposal ID</label>
+          <input type="number" id="voteProposalId" placeholder="e.g. 0">
         </div>
         <div class="btn-row">
-          <button class="btn btn-primary" onclick="castVote(true)" style="background:var(--r5);color:var(--bg)">✓ YES</button>
-          <button class="btn btn-primary" onclick="castVote(false)" style="background:var(--danger);color:white">✗ NO</button>
-          <button class="btn btn-outline" onclick="checkResults()" style="--accent:var(--r4)">Results</button>
-          <button class="btn btn-outline" onclick="executeProposal()" style="--accent:var(--r4)">Execute</button>
+          <button class="btn btn-yes"     onclick="castVote(true)">✓ YES</button>
+          <button class="btn btn-no"      onclick="castVote(false)">✗ NO</button>
+          <button class="btn btn-outline" onclick="checkResults()">Results</button>
+          <button class="btn btn-outline" onclick="executeProposal()">Execute</button>
         </div>
-
-        <!-- Vote bar -->
         <div class="vote-bar-wrap" id="voteBarWrap" style="display:none">
           <div class="vote-bar-labels">
-            <span>YES <span id="yesCount" style="color:var(--r5)">0</span></span>
-            <span>NO <span id="noCount" style="color:var(--danger)">0</span></span>
+            <span>YES <span id="yesCount" class="yes-txt">0</span></span>
+            <span>NO  <span id="noCount"  class="no-txt">0</span></span>
           </div>
-          <div class="vote-track">
-            <div class="vote-fill" id="voteFill"></div>
-          </div>
-          <div class="vote-status" id="voteStatus">—</div>
+          <div class="vote-track"><div class="vote-fill" id="voteFill"></div></div>
+          <div class="vote-status" id="voteStatus"></div>
         </div>
       </div>
     </div>
 
-  </div><!-- end .modules -->
+  </div>
 
-  <!-- ═══════════════════════════════════════════════════════
-       TRANSACTION LOG
-  ═══════════════════════════════════════════════════════ -->
-  <div class="module txlog" style="margin-bottom:1.5rem;">
+  <!-- ══ CERTIFICATE PREVIEW ══ -->
+  <div class="certificate-section">
+
+    <div class="cert-section-header">
+      <div class="csh-dot"></div>
+      NFT CERTIFICATE PREVIEW
+      <span class="csh-tag">Live Preview</span>
+    </div>
+
+    <div class="certificate">
+
+      <!-- Floating block decorations inside cert -->
+      <div class="cert-bg-blocks">
+        <div class="cbb cbb1"></div>
+        <div class="cbb cbb2"></div>
+        <div class="cbb cbb3"></div>
+        <div class="cbb cbb4"></div>
+      </div>
+
+      <!-- TOP ROW: MLSC logo | ANVAY | meta -->
+      <div class="cert-top">
+
+        <div class="cert-logo-area">
+          <!-- drop mlsc-logo.png into assets/images/ -->
+          <img src="assets/images/mlsc-logo.png" class="cert-logo" alt="MLSC"
+               onerror="this.style.display='none';document.getElementById('cert-logo-fb').style.display='flex'">
+          <div class="cert-logo-fb" id="cert-logo-fb">MLSC</div>
+        </div>
+
+        <div class="cert-anvay">
+          <div class="cert-anvay-label">EVENT</div>
+          <div class="cert-anvay-name">ANVAY</div>
+          <div class="cert-anvay-sub">BlockCity Web3 Workshop</div>
+        </div>
+
+        <div class="cert-meta-right">
+          <div class="cert-citizen-id">
+            <span class="cert-meta-label">CITIZEN ID</span>
+            <span class="cert-meta-value" id="previewCitizenId">BC-0000</span>
+          </div>
+          <div class="cert-date">
+            <span class="cert-meta-label">ISSUED</span>
+            <span class="cert-meta-value" id="certDate">—</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="cert-divider-line"></div>
+
+      <div class="cert-body">
+        <div class="cert-presents-text">This is to certify that</div>
+        <div class="cert-name-wrap">
+          <div class="cert-name" id="previewName">YOUR NAME</div>
+          <div class="cert-name-underline"></div>
+        </div>
+        <div class="cert-completed-text">has successfully completed</div>
+        <div class="cert-course">BlockCity Web3 Workshop</div>
+        <div class="cert-tech-stack">
+          Solidity &nbsp;·&nbsp; ERC-20 &nbsp;·&nbsp; ERC-721 &nbsp;·&nbsp; Governance &nbsp;·&nbsp; Sepolia
+        </div>
+      </div>
+
+      <div class="cert-divider-line"></div>
+
+      <div class="cert-bottom">
+        <div class="cert-seal">
+          <div class="cert-seal-hex">⬡</div>
+          <span class="cert-seal-text">VERIFIED</span>
+        </div>
+        <div class="cert-bottom-center">
+          Immutable &nbsp;·&nbsp; On-chain &nbsp;·&nbsp; Verifiable
+        </div>
+        <div class="cert-chain-badge">
+          <span class="cert-net-dot"></span>Sepolia Testnet
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ TX LOG ══ -->
+  <div class="txlog">
     <div class="txlog-header">
-      <span style="font-size:1rem;">📡</span>
-      <span class="txlog-title">Transaction Feed</span>
+      <span class="txlog-icon">📡</span>
+      <div class="txlog-title">Transaction Feed</div>
       <span class="live-badge">LIVE</span>
     </div>
     <ul id="txList"></ul>
   </div>
 
-  <!-- ═══════════════════════════════════════════════════════
-       FOOTER — HOW TO EXPAND
-  ═══════════════════════════════════════════════════════ -->
-  <div class="footer">
-    <div style="font-family:var(--font-display);font-size:1.1rem;letter-spacing:0.08em;color:var(--white);">
-      🔨 Expand This dApp
-    </div>
-    <div style="font-size:0.8rem;color:var(--muted);margin-top:0.3rem;">
-      Three ways to take this further after BlockCity
-    </div>
-    <div class="expand-grid">
-      <div class="expand-card">
-        <div class="expand-num">01</div>
-        <div class="expand-title">Add New Contract Functions</div>
-        <div class="expand-desc">Write a new function in Remix. Recompile. Copy the new ABI. Add it to the matching contract's <code style="color:var(--r1)">abi</code> array below. Call it from a new button. No other changes needed.</div>
-      </div>
-      <div class="expand-card">
-        <div class="expand-num">02</div>
-        <div class="expand-title">Deploy New Contracts</div>
-        <div class="expand-desc">Build a completely new Solidity contract. Deploy to Sepolia. Add a new entry to the <code style="color:var(--r1)">CONTRACTS</code> object. Create a fifth module section. The pattern is identical to the 4 rooms.</div>
-      </div>
-      <div class="expand-card">
-        <div class="expand-num">03</div>
-        <div class="expand-title">Ship It Live</div>
-        <div class="expand-desc">Drag this HTML file to <strong style="color:var(--white)">vercel.com</strong> or <strong style="color:var(--white)">netlify.com</strong>. Your dApp is live on the internet in 60 seconds. Share the URL. Anyone with MetaMask can use it.</div>
-      </div>
-    </div>
+</div><!-- /.container -->
 
-    <div style="margin-top:2rem;padding:1rem 1.2rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-family:var(--font-mono);font-size:0.68rem;color:var(--muted);line-height:1.8;">
-      Built at BlockCity Workshop &nbsp;·&nbsp; Sepolia Testnet &nbsp;·&nbsp; Ethers.js v6 &nbsp;·&nbsp; No frameworks &nbsp;·&nbsp; One HTML file
-    </div>
-  </div>
+<script src="assets/js/config/contracts.js"></script>
+<script src="assets/js/core/state.js"></script>
+<script src="assets/js/core/helpers.js"></script>
+<script src="assets/js/core/loader.js"></script>
+<script src="assets/js/core/connect.js"></script>
 
-</div><!-- end .container -->
+<script src="assets/js/rooms/room1.foundation.js"></script>
+<script src="assets/js/rooms/room2.treasury.js"></script>
+<script src="assets/js/rooms/room3.identity.js"></script>
+<script src="assets/js/rooms/room4.council.js"></script>
 
+<script src="assets/js/canvas.js"></script>
+<script src="assets/js/app.js"></script>
 
-<!-- ═══════════════════════════════════════════════════════════════════
-     JAVASCRIPT — All Web3 Logic
-
-     HOW THIS IS STRUCTURED:
-     ─────────────────────────
-     1. CONTRACTS  — paste your 4 addresses + ABIs here
-     2. STATE      — global variables (provider, signer, contract objects)
-     3. CONNECT    — wallet connection + contract initialisation
-     4. LOAD       — reads all data on connect
-     5. ROOM 1     — foundation contract functions
-     6. ROOM 2     — token contract functions
-     7. ROOM 3     — badge contract functions
-     8. ROOM 4     — voting contract functions
-     9. HELPERS    — toast, loading, tx log, utils
-
-     TO ADD A NEW FUNCTION:
-     ─────────────────────────
-     • Write the Solidity function in Remix
-     • Add it to the matching ABI array below
-     • Write a JS async function following the same pattern
-     • Call it from a new button in the HTML above
-═══════════════════════════════════════════════════════════════════ -->
-<script type="module" src="./assets/js/app.js"></script>
 </body>
 </html>
