@@ -1,53 +1,75 @@
+// =====================================================
+//  BLOCKCITY — FINAL CONTRACT CONFIGURATION
+//  All deployed on Sepolia
+// =====================================================
+
 const CONTRACTS = {
 
+  // =================================================
+  // 🏛 ROOM 1 — CityLaw
+  // 
+  // =================================================
   base: {
-    address: "0xYOUR_ROOM1_ADDRESS_HERE",
+    address: "0xe2aDB295f01bA8009bC47e7988F91D935ac7341b",
     abi: [
       "function cityName() view returns (string)",
       "function owner() view returns (address)",
-      "function getCityName() view returns (string)",
-      "function setCity(string memory _name) public",
-      "function platformName() view returns (string)",
-      "event ActionPerformed(string action, address by)"
+      "function lawCount() view returns (uint256)",
+      "function addLaw(string memory _law) public",
+      "function setCityName(string memory _name) public",
+      "function getLaw(uint256 index) view returns (string)",
+      "event LawAdded(string lawText, address addedBy)"
     ]
   },
 
+  // =================================================
+  // 💰 ROOM 2 — RewardToken (ERC20)
+  // 
+  // =================================================
   token: {
-    address: "0xYOUR_ROOM2_ADDRESS_HERE",
+    address: "0x754F8874a18Ae59204054a64c7b7f8F865025CfB",
     abi: [
       "function mint(address to, uint256 amount) public",
-      "function rewardUser(address user, uint256 amount) public",
-      "function readableBalance(address account) view returns (uint256)",
       "function balanceOf(address account) view returns (uint256)",
       "function totalSupply() view returns (uint256)",
-      "function transfer(address to, uint256 amount) public returns (bool)"
+      "function transfer(address to, uint256 amount) returns (bool)",
+      "function owner() view returns (address)",
+      "event Transfer(address indexed from, address indexed to, uint256 value)"
     ]
   },
 
+  // =================================================
+  // 🎓 ROOM 3 — WorkshopCertificateNFT (ERC721)
+  //
+  // =================================================
   badge: {
-    address: "0xYOUR_ROOM3_ADDRESS_HERE",
+    address: "0x25d2990DB95bf55842BDaeF518C22b93EfA0947A",
     abi: [
-      "function mintBadge(address to, string memory uri) public returns (uint256)",
-      "function tokenCounter() view returns (uint256)",
+      "function mintCertificate(address recipient,string memory studentName,string memory courseName,string memory issueDate,string memory metadataURI) public returns (uint256)",
+      "function totalCertificates() view returns (uint256)",
       "function ownerOf(uint256 tokenId) view returns (address)",
       "function tokenURI(uint256 tokenId) view returns (string)",
-      "event BadgeMinted(address to, uint256 tokenId)"
+      "function getCertificate(uint256 tokenId) view returns (string,string,string)",
+      "event CertificateMinted(uint256 tokenId,address recipient,string studentName,string courseName)"
     ]
   },
 
+  // =================================================
+  // 🗳 ROOM 4 — BlockCityVoting
+  // 
+  // =================================================
   voting: {
-    address: "0xYOUR_ROOM4_ADDRESS_HERE",
+    address: "0x8B490286f95ffFBED0Eb66a52b6dA508cECD07CC",
     abi: [
-      "function createProposal(string memory title, uint256 durationMinutes) public returns (uint256)",
-      "function vote(uint256 id, bool support) public",
-      "function getResults(uint256 id) view returns (uint256 yes, uint256 no, bool passed)",
-      "function execute(uint256 id) public",
+      "function createProposal(string memory _title, uint256 _mins) public returns (uint256)",
+      "function vote(uint256 _id, bool _support) public",
+      "function execute(uint256 _id) public",
+      "function getResults(uint256 _id) view returns (uint256 yes, uint256 no, bool passed)",
       "function proposalCount() view returns (uint256)",
-      "function hasVoted(uint256 id, address voter) view returns (bool)",
-      "event ProposalCreated(uint256 id, string title)",
-      "event VoteCast(uint256 id, address voter, bool support)"
+      "function hasVoted(uint256, address) view returns (bool)"
     ]
   }
+
 };
 
 export default CONTRACTS;

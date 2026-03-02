@@ -1,11 +1,13 @@
 /* ═══════════════════════════════════════════════════════
-   state.js — Global Blockchain State
+   state.js — Global Blockchain State Manager
+   Stores provider, signer, contracts & user address
 ═══════════════════════════════════════════════════════ */
 
-export let provider;
-export let signer;
-export let c = {};          // contracts
-export let userAddress = null;
+export let provider;      // Ethers provider
+export let signer;        // Wallet signer
+export let c = {};        // All contract instances
+export let userAddress;   // Connected wallet address
+
 
 /* SETTERS */
 

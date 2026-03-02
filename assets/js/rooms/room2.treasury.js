@@ -11,27 +11,33 @@ import {
 
 /* READ TREASURY */
 export async function readTreasury() {
+
   if (!c.token || !userAddress) return;
 
   try {
-    const bal = await c.token.readableBalance(userAddress);
 
-    setStatValue("tokenBalance", bal.toString() + " BCT");
-    setStatValue("tokenBalanceHero", bal.toString() + " BCT");
+    const balance = await c.token.balanceOf(userAddress); // ✅ FIXED
+    const supply  = await c.token.totalSupply();
 
-    // 🔥 Update nav progress
+    const formattedBal = ethers.formatUnits(balance, 18);
+    const formattedSup = ethers.formatUnits(supply, 18);
+
+    setStatValue("tokenBalance", formattedBal + " BCT");
+    setStatValue("tokenBalanceHero", formattedBal + " BCT");
+    setStatValue("totalSupply", formattedSup + " BCT");
     if (window.updateNavProgress) window.updateNavProgress();
 
   } catch (err) {
-    console.error("Treasury read:", err);
+    console.error("Treasury read error:", err);
   }
 }
 
 /* MINT TOKENS */
 export async function mintTokens() {
+
   if (!ensureConnected()) return;
 
-  const to = document.getElementById("mintAddress").value.trim();
+  const to     = document.getElementById("mintAddress").value.trim();
   const amount = document.getElementById("mintAmount").value;
 
   if (!to || !amount) {
@@ -40,7 +46,9 @@ export async function mintTokens() {
   }
 
   try {
+
     showLoading("Minting tokens...");
+
     const tx = await c.token.mint(to, Number(amount));
     await tx.wait();
 

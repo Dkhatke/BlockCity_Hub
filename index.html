@@ -372,19 +372,14 @@
 
 </div><!-- /.container -->
 
-<script src="assets/js/config/contracts.js"></script>
-<script src="assets/js/core/state.js"></script>
-<script src="assets/js/core/helpers.js"></script>
-<script src="assets/js/core/loader.js"></script>
-<script src="assets/js/core/connect.js"></script>
+<!-- Ethers must load normally -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/ethers@6.9.0/dist/ethers.umd.min.js"></script> -->
 
-<script src="assets/js/rooms/room1.foundation.js"></script>
-<script src="assets/js/rooms/room2.treasury.js"></script>
-<script src="assets/js/rooms/room3.identity.js"></script>
-<script src="assets/js/rooms/room4.council.js"></script>
+<!-- Load your entire app as module -->
+<script type="module" src="assets/js/app.js"></script>
 
+<!-- Canvas can stay normal (if it has no import/export) -->
 <script src="assets/js/canvas.js"></script>
-<script src="assets/js/app.js"></script>
 
 </body>
 </html>

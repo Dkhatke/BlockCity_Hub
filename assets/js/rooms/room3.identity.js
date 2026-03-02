@@ -1,4 +1,4 @@
-import { c, userAddress } from "../core/state.js";
+import { c } from "../core/state.js";
 import {
   ensureConnected,
   showToast,
@@ -9,54 +9,79 @@ import {
   setStatValue
 } from "../core/helpers.js";
 
-/* READ CERTIFICATE COUNT */
+/* ═══════════════════════════════════════
+   READ CERTIFICATE DATA
+═══════════════════════════════════════ */
+
 export async function readIdentity() {
+
   if (!c.badge) return;
 
   try {
+
     const count = await c.badge.totalCertificates();
     setStatValue("badgeCount", count.toString());
-
-    // 🔥 Update nav progress
     if (window.updateNavProgress) window.updateNavProgress();
 
   } catch (err) {
-    console.error("Certificate read error:", err);
+    console.error("Identity read error:", err);
   }
 }
 
-/* MINT CERTIFICATE */
+/* LIVE CERTIFICATE PREVIEW */
+export function updateCertificatePreview() {
+  const name = document.getElementById("studentName")?.value?.trim();
+  const citizenId = document.getElementById("citizenId")?.value?.trim();
+  const today = new Date().toISOString().slice(0, 10);
+
+  setStatValue("previewName", name || "YOUR NAME");
+  setStatValue("previewCitizenId", citizenId || "BC-0000");
+  setStatValue("certDate", today);
+}
+
+// Backward-compatible alias used in index.html inline handlers.
+export function updateCertPreview() {
+  updateCertificatePreview();
+}
+
+/* ═══════════════════════════════════════
+   MINT CERTIFICATE NFT
+═══════════════════════════════════════ */
+
 export async function mintCertificate() {
 
   if (!ensureConnected()) return;
 
   const name = document.getElementById("studentName").value.trim();
-  const course = document.getElementById("courseName").value.trim();
-  const uri = document.getElementById("badgeURI").value.trim();
+  const citizenId = document.getElementById("citizenId").value.trim();
+  const recipient = document.getElementById("badgeAddress").value.trim();
 
-  if (!name || !course || !uri) {
+  if (!name || !citizenId || !recipient) {
     showToast("error", "Fill all fields");
     return;
   }
 
   try {
-    showLoading("Minting Certificate NFT...");
 
-    const today = new Date().toISOString().split("T")[0];
+    showLoading("Minting certificate...");
+
+    const courseName = "BlockCity Web3 Workshop";
+    const issueDate = new Date().toISOString().slice(0, 10);
+    const metadataURI = "ipfs://placeholder";
 
     const tx = await c.badge.mintCertificate(
-      userAddress,
+      recipient,
       name,
-      course,
-      today,
-      uri
+      courseName,
+      issueDate,
+      metadataURI
     );
-
     await tx.wait();
 
-    logTx("r3", `Certificate minted`, tx.hash);
+    logTx("r3", `Certificate minted for ${name}`, tx.hash);
 
     await readIdentity();
+    updateCertificatePreview();
 
     hideLoading();
     showToast("success", "Certificate Minted!");
@@ -64,5 +89,32 @@ export async function mintCertificate() {
   } catch (err) {
     hideLoading();
     handleError("mintCertificate", err);
+  }
+}
+
+/* ═══════════════════════════════════════
+   LOOKUP OWNER
+═══════════════════════════════════════ */
+
+export async function lookupOwner() {
+
+  const id = document.getElementById("lookupTokenId").value;
+
+  if (!id) {
+    showToast("error", "Enter token ID");
+    return;
+  }
+
+  try {
+
+    const owner = await c.badge.ownerOf(Number(id));
+
+    document.getElementById("lookupResult").style.display = "flex";
+    document.getElementById("lookupLabel").textContent = "Owner";
+    document.getElementById("lookupValue").textContent =
+      owner.slice(0,6) + "..." + owner.slice(-4);
+
+  } catch (err) {
+    handleError("lookupOwner", err);
   }
 }

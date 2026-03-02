@@ -41,23 +41,23 @@ document.addEventListener("input", () => {
    LOAD ALL ROOM DATA AFTER WALLET CONNECT
 ───────────────────────────────────────────── */
 
-export async function loadAllData() {
+// export async function loadAllData() {
 
-  // Read Room 1 data
-  if (room1.readFoundation) await room1.readFoundation();
+//   // Read Room 1 data
+//   if (room1.readFoundation) await room1.readFoundation();
 
-  // Read Room 2 data
-  if (room2.readTreasury) await room2.readTreasury();
+//   // Read Room 2 data
+//   if (room2.readTreasury) await room2.readTreasury();
 
-  // Read Room 3 data
-  if (room3.readIdentity) await room3.readIdentity();
+//   // Read Room 3 data
+//   if (room3.readIdentity) await room3.readIdentity();
 
-  // Read Room 4 data
-  if (room4.readCouncil) await room4.readCouncil();
+//   // Read Room 4 data
+//   if (room4.readCouncil) await room4.readCouncil();
 
-  // After all reads → update nav progress
-  updateNavProgress();
-}
+// updateNavProgress();
+//   // After all reads → update nav progress
+// }
 
 /* ─────────────────────────────────────────────
    NAV PROGRESS LOGIC
@@ -74,20 +74,34 @@ function updateNavProgress() {
 
   let completed = 0;
 
+  r1?.classList.remove("active");
+  r2?.classList.remove("active");
+  r3?.classList.remove("active");
+  r4?.classList.remove("active");
+  wrapper?.classList.remove("complete");
+
   /* ROOM 1 → If at least 1 law exists */
   const lawCount = parseInt(
     document.getElementById("lawCountDisplay")?.textContent || "0"
   );
 
-  if (lawCount > 0) {
+  window.__navBaseline = window.__navBaseline || {};
+  if (window.__navBaseline.lawCount === undefined) {
+    window.__navBaseline.lawCount = Number.isNaN(lawCount) ? 0 : lawCount;
+  }
+
+  if (lawCount > window.__navBaseline.lawCount) {
     r1?.classList.add("active");
     completed++;
   }
 
-  /* ROOM 2 → If total supply loaded */
-  const supplyText = document.getElementById("totalSupply")?.textContent;
+  /* ROOM 2 → If connected wallet has non-zero token balance */
+  const balanceText = document.getElementById("tokenBalance")?.textContent;
+  const balanceValue = Number.parseFloat(
+    (balanceText || "").replace(/[^0-9.]/g, "")
+  );
 
-  if (supplyText && supplyText !== "—") {
+  if (Number.isFinite(balanceValue) && balanceValue > 0) {
     r2?.classList.add("active");
     completed++;
   }
@@ -107,7 +121,11 @@ function updateNavProgress() {
     document.getElementById("proposalCount")?.textContent || "0"
   );
 
-  if (proposalCount > 0) {
+  if (window.__navBaseline.proposalCount === undefined) {
+    window.__navBaseline.proposalCount = Number.isNaN(proposalCount) ? 0 : proposalCount;
+  }
+
+  if (proposalCount > window.__navBaseline.proposalCount) {
     r4?.classList.add("active");
     completed++;
   }
