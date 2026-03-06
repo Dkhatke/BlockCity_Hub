@@ -6,14 +6,14 @@ This is a complete Web3 dApp built during the BlockCity Workshop.
 
 It connects to **4 Smart Contracts deployed on Sepolia Testnet**:
 
-1. 🏛 City Foundation (Base Contract)
-2. 💰 Treasury (ERC-20 Token)
-3. 🪪 Identity (NFT Badges)
-4. 🗳 Council (On-chain Voting / DAO)
+1. City Foundation (Base Contract)
+2. Treasury (ERC-20 Token)
+3. Identity (NFT Badges)
+4. Council (On-chain Voting / DAO)
 
 ---
 
-# 📦 Project Structure
+#  Project Structure
 
 ```
 
@@ -26,7 +26,8 @@ BLOCKCITY/
 │   │   └── styles.css
 │   │
 │   └── js/
-│       ├── app.js
+│       ├── app.js 
+        |---canvas.js
 │       │
 │       ├── config/
 │       │   └── contracts.js
@@ -117,32 +118,6 @@ Click **"Open with Live Server"**
 Do NOT open with file://  
 Modules require a local server.
 
----
-
-# 🔧 Connect Your Smart Contracts
-
-Open:
-
-```
-
-assets/js/config/contracts.js
-
-```
-
-Replace:
-
-```
-
-0xYOUR_ROOM1_ADDRESS_HERE
-0xYOUR_ROOM2_ADDRESS_HERE
-0xYOUR_ROOM3_ADDRESS_HERE
-0xYOUR_ROOM4_ADDRESS_HERE
-
-```
-
-With your actual deployed contract addresses from Remix.
-
----
 
 #  How The Architecture Works
 
@@ -242,20 +217,6 @@ Make sure:
 
 No other changes required.
 
----
-
-# Deploy Online (Optional)
-
-You can deploy this to:
-
-- https://vercel.com
-- https://netlify.com
-
-Just drag the folder and deploy.
-
-Anyone with MetaMask can use your dApp.
-
----
 
 # Technologies Used
 
@@ -272,7 +233,7 @@ Fully client-side Web3 dApp.
 
 ---
 
-# 🎓 Learning Goals
+# Learning Goals
 
 By completing this project, you understand:
 
@@ -286,7 +247,7 @@ By completing this project, you understand:
 
 ---
 
-# 🏁 Final Note
+#  Final Note
 
 This is not just a workshop demo.
 
