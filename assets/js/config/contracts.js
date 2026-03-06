@@ -10,7 +10,7 @@ const CONTRACTS = {
   // 
   // =================================================
   base: {
-    address: "0xe2aDB295f01bA8009bC47e7988F91D935ac7341b",
+    address: "YOUR CONTRACT ADDRESS",
     abi: [
       "function cityName() view returns (string)",
       "function owner() view returns (address)",
@@ -27,7 +27,7 @@ const CONTRACTS = {
   // 
   // =================================================
   token: {
-    address: "0x754F8874a18Ae59204054a64c7b7f8F865025CfB",
+    address: "YOUR CONTRACT ADDRESS",
     abi: [
       "function mint(address to, uint256 amount) public",
       "function balanceOf(address account) view returns (uint256)",
@@ -43,7 +43,7 @@ const CONTRACTS = {
   //
   // =================================================
   badge: {
-    address: "0x25d2990DB95bf55842BDaeF518C22b93EfA0947A",
+    address: "YOUR CONTRACT ADDRESS",
     abi: [
       "function mintCertificate(address recipient,string memory studentName,string memory courseName,string memory issueDate,string memory metadataURI) public returns (uint256)",
       "function totalCertificates() view returns (uint256)",
@@ -59,7 +59,7 @@ const CONTRACTS = {
   // 
   // =================================================
   voting: {
-    address: "0x8B490286f95ffFBED0Eb66a52b6dA508cECD07CC",
+    address: "YOUR CONTRACT ADDRESS",
     abi: [
       "function createProposal(string memory _title, uint256 _mins) public returns (uint256)",
       "function vote(uint256 _id, bool _support) public",
